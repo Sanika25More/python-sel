@@ -1,20 +1,30 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/Sanika25More/python-sel.git'
+                checkout scm
             }
         }
+
         stage('Setup Environment') {
             steps {
-                bat 'python -m venv venv'
-                bat 'venv\\Scripts\\activate && pip install pytest selenium'
+                // Create virtual environment
+                bat 'C:\\Users\\hp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m venv venv'
+                
+                // Upgrade pip
+                bat 'venv\\Scripts\\pip install --upgrade pip'
+                
+                // Install Selenium
+                bat 'venv\\Scripts\\pip install selenium'
             }
         }
+
         stage('Run Selenium Tests') {
             steps {
-                bat 'venv\\Scripts\\activate && pytest --maxfail=1 --disable-warnings -q'
+                // Run your test file (example: test_selenium.py)
+                bat 'venv\\Scripts\\python.exe test_selenium.py'
             }
         }
     }
